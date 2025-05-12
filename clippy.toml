@@ -1,0 +1,13 @@
+# Allow some common patterns that might be false positives
+too_many_arguments_threshold = 8
+too_many_lines_threshold = 300
+cognitive_complexity_threshold = 25
+
+# Enforce some good practices
+disallowed_types = ["std::collections::HashMap", "std::collections::HashSet"]
+disallowed_methods = ["unwrap", "expect"]
+disallowed_macros = ["println", "print"]
+
+# Allow some specific cases
+allow_explicit_iter_loop = true
+allow_implicit_hasher = true 
