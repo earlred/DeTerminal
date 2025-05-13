@@ -1,4 +1,3 @@
-
 # DeTerminal: Semantic Terminal AI Assistant
 
 DeTerminal is an AI-assisted terminal tool that suggests and corrects shell commands in real-time using OpenAI or a locally running Ollama model. It helps you write correct shell commands and provides explanations for your actions.
@@ -15,29 +14,37 @@ DeTerminal is an AI-assisted terminal tool that suggests and corrects shell comm
 
 ## 🛠️ Installation
 
-### Option 1: Download Prebuilt Binary
+### Option 1: Download Prebuilt Installer
 
-Visit the [Releases page](https://github.com/earlred/determinal/releases/latest) to download a prebuilt binary for your platform:
+Visit the [Releases page](https://github.com/earlred/determinal/releases/latest) to download a prebuilt installer for your platform:
 
-| Platform              | Download Link |
-|-----------------------|---------------|
-| macOS (Apple Silicon) | [determinal-aarch64-apple-darwin.tar.gz](https://github.com/earlred/determinal/releases/latest/download/determinal-aarch64-apple-darwin.tar.gz) |
-| macOS (Intel)         | [determinal-x86_64-apple-darwin.tar.gz](https://github.com/earlred/determinal/releases/latest/download/determinal-x86_64-apple-darwin.tar.gz) |
-| Linux (x64)           | [determinal-x86_64-unknown-linux-gnu.tar.gz](https://github.com/earlred/determinal/releases/latest/download/determinal-x86_64-unknown-linux-gnu.tar.gz) |
-| Windows (x64)         | [determinal-x86_64-pc-windows-gnu.zip](https://github.com/earlred/determinal/releases/latest/download/determinal-x86_64-pc-windows-gnu.zip) |
+| Platform              | Installer Type | Download Link |
+|-----------------------|---------------|---------------|
+| macOS (Apple Silicon) | DMG           | [DeTerminal-aarch64.dmg](https://github.com/earlred/determinal/releases/latest/download/DeTerminal-aarch64.dmg) |
+| macOS (Intel)         | DMG           | [DeTerminal-x86_64.dmg](https://github.com/earlred/determinal/releases/latest/download/DeTerminal-x86_64.dmg) |
+| Linux (x64)           | DEB           | [determinal-x86_64-unknown-linux-gnu.deb](https://github.com/earlred/determinal/releases/latest/download/determinal-x86_64-unknown-linux-gnu.deb) |
+| Windows (x64)         | EXE           | [DeTerminal-Setup.exe](https://github.com/earlred/determinal/releases/latest/download/DeTerminal-Setup.exe) |
 
 After downloading:
+1. For macOS: Open the DMG and drag DeTerminal to your Applications folder.
+2. For Linux: Install the DEB with `sudo dpkg -i determinal-*.deb`.
+3. For Windows: Run the EXE installer.
+
+### Option 2: Download Prebuilt Binary
+
+You can also download the raw binary for your platform from the Releases page. After downloading:
 1. Extract the archive
 2. Move the binary to a directory in your `PATH` (e.g., `/usr/local/bin` on Unix systems)
 3. Make it executable: `chmod +x determinal`
 
-### Option 2: Build from Source
+### Option 3: Build from Source
 
 #### Prerequisites
 
 - Rust (install from [https://rustup.rs](https://rustup.rs))
 - For OpenAI: an OpenAI API key
 - For Ollama: Ollama installed locally
+- For macOS DMG packaging: [Homebrew](https://brew.sh/) and `create-dmg` (`brew install create-dmg`)
 
 #### Build and Install
 
@@ -47,11 +54,19 @@ cd determinal
 cargo install --path .
 ```
 
-Once installed, you can run it globally via:
+#### Build macOS DMG (optional, macOS only)
+
+If you want to package a DMG installer on macOS:
 
 ```bash
-determinal
+brew install create-dmg
+cargo build --release
+# The workflow will output DMG to output/DeTerminal.dmg
 ```
+
+#### Build Windows EXE Installer (optional, Windows only)
+
+The workflow will output the EXE installer to `installer/windows/Output/DeTerminal-Setup.exe`.
 
 ## 🔐 AI Backend Setup
 
