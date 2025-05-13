@@ -1,0 +1,39 @@
+{
+    "file_operations": [
+        "ls", "cd", "pwd", "mkdir", "rm", "rmdir", "cp", "mv", "touch",
+        "cat", "less", "more", "head", "tail", "grep", "find"
+    ],
+    "system_info": [
+        "ps", "top", "df", "du", "free", "uname", "who", "whoami",
+        "date", "cal", "uptime"
+    ],
+    "network": [
+        "ping", "curl", "wget", "ssh", "scp", "netstat", "ifconfig",
+        "ip", "hostname", "dig", "nslookup"
+    ],
+    "text_processing": [
+        "echo", "printf", "sort", "uniq", "wc", "cut", "paste",
+        "join", "tr", "sed", "awk"
+    ],
+    "package_management": [
+        "apt", "apt-get", "yum", "dnf", "brew", "pip", "npm",
+        "cargo", "gem"
+    ],
+    "git_commands": [
+        "git", "git add", "git commit", "git push", "git pull",
+        "git status", "git log", "git branch", "git checkout"
+    ],
+    "process_management": [
+        "kill", "killall", "bg", "fg", "jobs", "nohup",
+        "screen", "tmux"
+    ],
+    "compression": [
+        "tar", "gzip", "gunzip", "zip", "unzip", "rar", "unrar"
+    ],
+    "permissions": [
+        "chmod", "chown", "chgrp", "umask"
+    ],
+    "environment": [
+        "export", "env", "set", "unset", "source"
+    ]
+} 
