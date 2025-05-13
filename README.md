@@ -14,30 +14,6 @@ DeTerminal is an AI-assisted terminal tool that suggests and corrects shell comm
 
 ## 🛠️ Installation
 
-### Option 1: Download Prebuilt Installer
-
-Visit the [Releases page](https://github.com/earlred/determinal/releases/latest) to download a prebuilt installer for your platform:
-
-| Platform              | Installer Type | Download Link |
-|-----------------------|---------------|---------------|
-| macOS (Apple Silicon) | DMG           | [DeTerminal-aarch64.dmg](https://github.com/earlred/determinal/releases/latest/download/DeTerminal-aarch64.dmg) |
-| macOS (Intel)         | DMG           | [DeTerminal-x86_64.dmg](https://github.com/earlred/determinal/releases/latest/download/DeTerminal-x86_64.dmg) |
-| Linux (x64)           | DEB           | [determinal-x86_64-unknown-linux-gnu.deb](https://github.com/earlred/determinal/releases/latest/download/determinal-x86_64-unknown-linux-gnu.deb) |
-| Windows (x64)         | EXE           | [DeTerminal-Setup.exe](https://github.com/earlred/determinal/releases/latest/download/DeTerminal-Setup.exe) |
-
-After downloading:
-1. For macOS: Open the DMG and drag DeTerminal to your Applications folder.
-2. For Linux: Install the DEB with `sudo dpkg -i determinal-*.deb`.
-3. For Windows: Run the EXE installer.
-
-### Option 2: Download Prebuilt Binary
-
-You can also download the raw binary for your platform from the Releases page. After downloading:
-1. Extract the archive
-2. Move the binary to a directory in your `PATH` (e.g., `/usr/local/bin` on Unix systems)
-3. Make it executable: `chmod +x determinal`
-
-### Option 3: Build from Source
 
 #### Prerequisites
 
