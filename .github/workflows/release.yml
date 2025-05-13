@@ -1,0 +1,217 @@
+name: Release Installers
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-linux-deb:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Install cargo-deb
+        run: cargo install cargo-deb
+
+      - name: Build .deb
+        run: |
+          set -e
+          cargo deb
+
+      - name: Upload .deb
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/debian/*.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-deb
+          path: target/debian/*.deb
+
+  build-macos-dmg:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Clean previous builds
+        run: |
+          rm -rf dist output
+          mkdir -p dist output
+
+      - name: Build Release Binary
+        run: |
+          set -e
+          cargo build --release
+
+      - name: Install create-dmg
+        run: brew install create-dmg
+
+      - name: Create .app Bundle
+        run: |
+          set -e
+          ls -lh target/release || true
+          if [ ! -f target/release/determinal ]; then
+            echo "❌ Binary not found!"
+            exit 1
+          fi
+
+          mkdir -p dist/DeTerminal.app/Contents/MacOS
+          cp target/release/determinal dist/DeTerminal.app/Contents/MacOS/
+          chmod +x dist/DeTerminal.app/Contents/MacOS/determinal
+
+          # Copy app icon if it exists
+          if [ -f assets/icon.icns ]; then
+            mkdir -p dist/DeTerminal.app/Contents/Resources
+            cp assets/icon.icns dist/DeTerminal.app/Contents/Resources/
+          fi
+
+          # Create Info.plist with version from git tag
+          VERSION=${GITHUB_REF#refs/tags/v}
+          cat > dist/DeTerminal.app/Contents/Info.plist << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>CFBundleExecutable</key>
+              <string>determinal</string>
+              <key>CFBundleIdentifier</key>
+              <string>com.determinal.app</string>
+              <key>CFBundleName</key>
+              <string>DeTerminal</string>
+              <key>CFBundleDisplayName</key>
+              <string>DeTerminal</string>
+              <key>CFBundleVersion</key>
+              <string>${VERSION}</string>
+              <key>CFBundleShortVersionString</key>
+              <string>${VERSION}</string>
+              <key>LSMinimumSystemVersion</key>
+              <string>10.13</string>
+              <key>CFBundleIconFile</key>
+              <string>icon.icns</string>
+          </dict>
+          </plist>
+          EOF
+
+      - name: Create DMG
+        run: |
+          set -e
+          create-dmg \
+            --volname "DeTerminal" \
+            --window-pos 200 120 \
+            --window-size 800 400 \
+            --icon-size 100 \
+            --icon "DeTerminal.app" 200 190 \
+            --app-drop-link 600 185 \
+            --sandbox-safe \
+            output/DeTerminal.dmg \
+            dist/DeTerminal.app
+
+      - name: Upload .dmg to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: output/*.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg
+          path: output/*.dmg
+
+  build-windows-exe:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build Release
+        run: cargo build --release
+
+      - name: Compile .ISS to .EXE Installer
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+        with:
+          path: installer/windows/setup.iss
+          options: /O+
+
+      - name: Upload .exe Installer
+        uses: softprops/action-gh-release@v2
+        with:
+          files: installer/windows/Output/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-exe
+          path: installer/windows/Output/*.exe
+
+  build-checksums:
+    runs-on: ubuntu-latest
+    needs: [build-linux-deb, build-macos-dmg, build-windows-exe]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Generate checksums
+        run: |
+          set -e
+          find artifacts -type f \( -name "*.dmg" -o -name "*.deb" -o -name "*.exe" \) -exec sha256sum {} \; > checksums.txt
+
+      - name: Upload checksums
+        uses: softprops/action-gh-release@v2
+        with:
+          files: checksums.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

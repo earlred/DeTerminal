@@ -1,39 +1,104 @@
 {
-    "file_operations": [
-        "ls", "cd", "pwd", "mkdir", "rm", "rmdir", "cp", "mv", "touch",
-        "cat", "less", "more", "head", "tail", "grep", "find"
-    ],
-    "system_info": [
-        "ps", "top", "df", "du", "free", "uname", "who", "whoami",
-        "date", "cal", "uptime"
-    ],
-    "network": [
-        "ping", "curl", "wget", "ssh", "scp", "netstat", "ifconfig",
-        "ip", "hostname", "dig", "nslookup"
-    ],
-    "text_processing": [
-        "echo", "printf", "sort", "uniq", "wc", "cut", "paste",
-        "join", "tr", "sed", "awk"
-    ],
-    "package_management": [
-        "apt", "apt-get", "yum", "dnf", "brew", "pip", "npm",
-        "cargo", "gem"
-    ],
-    "git_commands": [
-        "git", "git add", "git commit", "git push", "git pull",
-        "git status", "git log", "git branch", "git checkout"
-    ],
-    "process_management": [
-        "kill", "killall", "bg", "fg", "jobs", "nohup",
-        "screen", "tmux"
-    ],
-    "compression": [
-        "tar", "gzip", "gunzip", "zip", "unzip", "rar", "unrar"
-    ],
-    "permissions": [
-        "chmod", "chown", "chgrp", "umask"
-    ],
-    "environment": [
-        "export", "env", "set", "unset", "source"
-    ]
+    "common": {
+        "file_operations": [
+            "ls", "cd", "pwd", "mkdir", "rm", "rmdir", "cp", "mv", "touch",
+            "cat", "less", "more", "head", "tail", "grep", "find"
+        ],
+        "system_info": [
+            "ps", "top", "df", "du", "free", "uname", "who", "whoami",
+            "date", "cal", "uptime"
+        ],
+        "network": [
+            "ping", "curl", "wget", "ssh", "scp", "netstat", "ifconfig",
+            "ip", "hostname", "dig", "nslookup"
+        ],
+        "text_processing": [
+            "echo", "printf", "sort", "uniq", "wc", "cut", "paste",
+            "join", "tr", "sed", "awk"
+        ],
+        "package_management": [
+            "apt", "apt-get", "yum", "dnf", "brew", "pip", "npm",
+            "cargo", "gem"
+        ],
+        "git_commands": [
+            "git", "git add", "git commit", "git push", "git pull",
+            "git status", "git log", "git branch", "git checkout"
+        ],
+        "process_management": [
+            "kill", "killall", "bg", "fg", "jobs", "nohup",
+            "screen", "tmux"
+        ],
+        "compression": [
+            "tar", "gzip", "gunzip", "zip", "unzip", "rar", "unrar"
+        ],
+        "permissions": [
+            "chmod", "chown", "chgrp", "umask"
+        ]
+    },
+    "bash": {
+        "builtins": [
+            "alias", "bg", "bind", "break", "builtin", "caller", "cd", "command",
+            "compgen", "complete", "continue", "declare", "dirs", "disown", "echo",
+            "enable", "eval", "exec", "exit", "export", "fc", "fg", "getopts",
+            "hash", "help", "history", "jobs", "kill", "let", "local", "logout",
+            "mapfile", "popd", "printf", "pushd", "pwd", "read", "readarray",
+            "readonly", "return", "set", "shift", "shopt", "source", "suspend",
+            "test", "times", "trap", "type", "typeset", "ulimit", "umask",
+            "unalias", "unset", "wait"
+        ]
+    },
+    "zsh": {
+        "builtins": [
+            "alias", "autoload", "bg", "bindkey", "break", "builtin", "cd", "chdir",
+            "command", "compctl", "continue", "declare", "dirs", "disable", "disown",
+            "echo", "emulate", "eval", "exec", "exit", "export", "false", "fc",
+            "fg", "float", "functions", "getopts", "hash", "history", "integer",
+            "jobs", "kill", "let", "limit", "local", "logout", "popd", "print",
+            "printf", "pushd", "pwd", "r", "read", "readonly", "rehash", "return",
+            "set", "setopt", "shift", "source", "suspend", "test", "times", "trap",
+            "true", "type", "typeset", "ulimit", "umask", "unalias", "unfunction",
+            "unhash", "unlimit", "unset", "unsetopt", "wait", "whence", "where",
+            "which", "zcompile", "zle", "zmodload", "zparseopts", "zprof", "zpty",
+            "zregexparse", "zsocket", "zstyle", "ztcp"
+        ]
+    },
+    "powershell": {
+        "cmdlets": [
+            "Get-Command", "Get-Help", "Get-Process", "Get-Service", "Get-Content",
+            "Set-Content", "Add-Content", "Clear-Content", "Get-ChildItem", "Set-Location",
+            "Get-Location", "New-Item", "Remove-Item", "Copy-Item", "Move-Item",
+            "Rename-Item", "Get-Item", "Get-ItemProperty", "Set-ItemProperty",
+            "Get-PSDrive", "New-PSDrive", "Remove-PSDrive", "Get-PSProvider",
+            "Get-Path", "Resolve-Path", "Split-Path", "Test-Path", "Get-Acl",
+            "Set-Acl", "Get-EventLog", "Clear-EventLog", "Write-EventLog",
+            "Get-WmiObject", "Invoke-WmiMethod", "Register-WmiEvent",
+            "Get-ComputerInfo", "Get-SystemInfo", "Get-NetAdapter", "Get-NetIPAddress",
+            "Get-NetRoute", "Test-NetConnection", "Get-DnsClientServerAddress",
+            "Set-DnsClientServerAddress", "Get-NetFirewallRule", "New-NetFirewallRule",
+            "Remove-NetFirewallRule", "Enable-NetFirewallRule", "Disable-NetFirewallRule"
+        ],
+        "aliases": [
+            "ls", "dir", "cd", "pwd", "cp", "copy", "mv", "move", "rm", "del",
+            "mkdir", "md", "rmdir", "rd", "cat", "type", "more", "cls", "clear",
+            "echo", "write", "ps", "kill", "sleep", "start", "stop", "restart",
+            "select", "sort", "measure", "where", "foreach", "if", "else", "switch",
+            "try", "catch", "finally", "break", "continue", "return", "exit"
+        ]
+    },
+    "cmd": {
+        "internal": [
+            "assoc", "break", "call", "cd", "chcp", "chdir", "cls", "color", "copy",
+            "date", "del", "dir", "echo", "endlocal", "erase", "exit", "for", "ftype",
+            "goto", "if", "md", "mkdir", "mklink", "move", "path", "pause", "popd",
+            "prompt", "pushd", "rd", "rem", "ren", "rename", "rmdir", "set", "setlocal",
+            "shift", "start", "time", "title", "type", "ver", "verify", "vol"
+        ],
+        "external": [
+            "attrib", "chkdsk", "comp", "compact", "convert", "defrag", "diskpart",
+            "doskey", "driverquery", "find", "findstr", "format", "fsutil", "ipconfig",
+            "label", "mode", "more", "net", "netstat", "ping", "powercfg", "reg",
+            "regsvr32", "robocopy", "route", "sc", "schtasks", "shutdown", "sort",
+            "subst", "systeminfo", "taskkill", "tasklist", "tree", "xcopy"
+        ]
+    }
 } 

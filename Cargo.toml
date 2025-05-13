@@ -1,6 +1,6 @@
 [package]
 name = "determinal"
-version = "0.1.0"
+version = "0.1.3"
 edition = "2024"
 authors = ["Earl Red <earled@users.noreply.github.com>"]
 description = "DeTerminal: Semantic Terminal AI Assistant that suggests and corrects shell commands using AI"

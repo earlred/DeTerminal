@@ -1,24 +1,49 @@
+
 # DeTerminal: Semantic Terminal AI Assistant
 
-DeTerminal is an AI-assisted terminal tool that suggests and corrects shell commands in real-time using OpenAI or a locally running Ollama model.
+DeTerminal is an AI-assisted terminal tool that suggests and corrects shell commands in real-time using OpenAI or a locally running Ollama model. It helps you write correct shell commands and provides explanations for your actions.
 
 ## 🚀 Features
 
-* Understands natural language queries like "count files" or "fix this command"
-* Suggests and auto-corrects mistyped or invalid shell commands
-* Works with either OpenAI API or a local Ollama model (e.g. llama3)
-* Cross-platform: tested on macOS and Linux
-* Runs entirely in your terminal
+* 🤖 AI-powered command suggestions and corrections
+* 🔄 Real-time command validation
+* 🌐 Multiple AI backends (OpenAI GPT-4 or local Ollama models)
+* 🔒 Privacy-focused with local model support
+* 💻 Cross-platform: tested on macOS and Linux
+* 🎯 Natural language understanding
+* 🛠️ Runs entirely in your terminal
 
 ## 🛠️ Installation
 
-### Prerequisites
+### Option 1: Download Prebuilt Binary
 
-* Rust (install from [https://rustup.rs](https://rustup.rs))
+Visit the [Releases page](https://github.com/earlred/determinal/releases/latest) to download a prebuilt binary for your platform:
 
-### Build and install
+| Platform              | Download Link |
+|-----------------------|---------------|
+| macOS (Apple Silicon) | [determinal-aarch64-apple-darwin.tar.gz](https://github.com/earlred/determinal/releases/latest/download/determinal-aarch64-apple-darwin.tar.gz) |
+| macOS (Intel)         | [determinal-x86_64-apple-darwin.tar.gz](https://github.com/earlred/determinal/releases/latest/download/determinal-x86_64-apple-darwin.tar.gz) |
+| Linux (x64)           | [determinal-x86_64-unknown-linux-gnu.tar.gz](https://github.com/earlred/determinal/releases/latest/download/determinal-x86_64-unknown-linux-gnu.tar.gz) |
+| Windows (x64)         | [determinal-x86_64-pc-windows-gnu.zip](https://github.com/earlred/determinal/releases/latest/download/determinal-x86_64-pc-windows-gnu.zip) |
+
+After downloading:
+1. Extract the archive
+2. Move the binary to a directory in your `PATH` (e.g., `/usr/local/bin` on Unix systems)
+3. Make it executable: `chmod +x determinal`
+
+### Option 2: Build from Source
+
+#### Prerequisites
+
+- Rust (install from [https://rustup.rs](https://rustup.rs))
+- For OpenAI: an OpenAI API key
+- For Ollama: Ollama installed locally
+
+#### Build and Install
 
 ```bash
+git clone https://github.com/earlred/determinal.git
+cd determinal
 cargo install --path .
 ```
 
@@ -28,15 +53,14 @@ Once installed, you can run it globally via:
 determinal
 ```
 
-## 🔐 Environment Variables
+## 🔐 AI Backend Setup
 
-To use the OpenAI backend, you need an OpenAI API key. Here's how to get one:
+DeTerminal supports two AI backends:
 
-### How to get an OpenAI API key
-1. Go to the [OpenAI API Keys page](https://platform.openai.com/account/api-keys) (you'll need to log in or create an account).
-2. Click the "Create new secret key" button.
-3. Copy the generated key and keep it somewhere safe (you won't be able to see it again).
-4. Set your API key as an environment variable:
+### OpenAI (GPT-4)
+
+1. Get your API key from [OpenAI API Keys page](https://platform.openai.com/account/api-keys)
+2. Set your key as an environment variable:
 
 <details>
 <summary>macOS/Linux (bash)</summary>
@@ -67,16 +91,11 @@ $env:OPENAI_API_KEY="your-api-key-here"
 
 </details>
 
-> Replace `your-api-key-here` with your actual OpenAI key.
+### Ollama (Local)
 
-## 🦙 Ollama Setup
+Ollama is an open-source framework for running LLMs locally. Perfect for offline or privacy-focused use.
 
-Ollama is an open-source framework for running large language models locally. It's a great alternative to OpenAI when you want to keep your data private or work offline.
-
-### Installing Ollama
-
-1. Visit [Ollama's official website](https://ollama.ai) and download the installer for your operating system.
-2. Follow the installation instructions for your platform:
+#### Installation
 
 <details>
 <summary>macOS</summary>
@@ -85,7 +104,7 @@ Ollama is an open-source framework for running large language models locally. It
 # Using Homebrew
 brew install ollama
 
-# Or download the .dmg file from the website
+# Or download the .dmg from ollama.ai
 ```
 
 </details>
@@ -102,11 +121,11 @@ curl -fsSL https://ollama.ai/install.sh | sh
 <details>
 <summary>Windows</summary>
 
-Download and run the Windows installer from the [Ollama website](https://ollama.ai).
+Download the installer from [ollama.ai](https://ollama.ai)
 
 </details>
 
-### Running Ollama
+#### Running Ollama
 
 1. Start the Ollama service:
    ```bash
@@ -120,31 +139,34 @@ Download and run the Windows installer from the [Ollama website](https://ollama.
 
 3. Keep the Ollama service running in a separate terminal window while using DeTerminal.
 
-## 🤖 AI Backends
+> **Note:** The `gemma3:4b` model has been tested to work best with DeTerminal. Compatibility with other models is still being improved.
 
-You can choose between:
+## 🧪 Usage
 
-* **OpenAI (GPT-4)** — requires setting `OPENAI_API_KEY`
-* **Ollama (local)** — runs a local model like llama3: `ollama run llama3`
+Start DeTerminal by running:
+```bash
+determinal
+```
 
-> **Note:** When using Ollama, the `gemma3:4b` model has been tested to work best. Compatibility with other models is still being improved.
+When you first start DeTerminal, it will prompt you to choose your preferred AI source. You can change the AI provider at any time by typing `change-ai`.
 
-When DeTerminal starts, it will prompt you to choose your preferred AI source.
-
-## 🧪 Example Usage
+### Example Commands
 
 ```shell
+# List files in current directory
 DeTerminal > list files
 💭 Validating with AI...
 🤖 I think you meant to run: `ls`
 ✔ ❓ Do you want to run it? · yes
 
+# Switch AI provider
 DeTerminal > change-ai
-Which AI should FixBot use?
+Select your AI provider:
   [0] OpenAI (GPT-4)
   [1] Ollama (local)
 > 0
 
+# Get help
 DeTerminal > help
 💭 Validating with AI...
 🤖 I think you meant to run: `man bash`
@@ -152,10 +174,14 @@ DeTerminal > help
 ✔ ❓ Do you want to run it? · yes
 ```
 
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
 ## 📝 License
 
 MIT
 
 ---
 
-Made with ❤️ by [Earl Red](https://github.com/earled)
+Made with ❤️ by [Earl Red](https://github.com/earlred)

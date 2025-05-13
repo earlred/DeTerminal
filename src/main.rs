@@ -91,6 +91,7 @@ fn print_banner() {
         "DeTerminal: Semantic Terminal AI Assistant".bold().green(),
         "=".repeat(40),
     );
+    println!("Type 'change-ai' at any time to switch your AI provider.\n");
 }
 
 fn run_command(command: &str) {
@@ -154,6 +155,14 @@ fn main() {
 
         if input == "exit" || input == "quit" {
             break;
+        }
+
+        // Handle change-ai command with fuzzy matching
+        if input.to_lowercase().contains("change") && input.to_lowercase().contains("ai") {
+            println!("Switching AI provider...");
+            select_ai_source();
+            println!(); // Add a newline for better readability
+            continue;
         }
 
         // First try to execute the command directly if it's in our valid commands list
