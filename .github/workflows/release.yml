@@ -1,0 +1,60 @@
+name: Release Binaries
+
+on:
+  push:
+    tags:
+      - 'v*'  # triggers on git tag like v0.1.0
+
+jobs:
+  build:
+    name: Build & Upload Binaries
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+          - x86_64-pc-windows-gnu
+          - x86_64-apple-darwin
+          - aarch64-apple-darwin
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          target: ${{ matrix.target }}
+
+      - name: Install cross compiler dependencies
+        run: sudo apt-get update && sudo apt-get install -y build-essential gcc-multilib
+
+      - name: Build binary
+        run: cargo build --release --target=${{ matrix.target }}
+
+      - name: Package binary
+        run: |
+          BIN_NAME=determinal
+          TARGET=${{ matrix.target }}
+          OUT_DIR=release/${TARGET}
+          mkdir -p $OUT_DIR
+
+          if [[ "$TARGET" == *"windows"* ]]; then
+            cp target/$TARGET/release/$BIN_NAME.exe $OUT_DIR/
+            cd release && zip -r ${BIN_NAME}-${TARGET}.zip ${TARGET} && cd ..
+          else
+            cp target/$TARGET/release/$BIN_NAME $OUT_DIR/
+            cd release && tar -czf ${BIN_NAME}-${TARGET}.tar.gz ${TARGET} && cd ..
+          fi
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            release/*.tar.gz
+            release/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
