@@ -73,9 +73,7 @@ jobs:
           mkdir -p dist output
 
       - name: Build Release Binary
-        run: |
-          set -e
-          cargo build --release
+        run: cargo build --release
 
       - name: Install create-dmg
         run: brew install create-dmg
@@ -83,9 +81,9 @@ jobs:
       - name: Create .app Bundle
         run: |
           set -e
-          ls -lh target/release || true
+
           if [ ! -f target/release/determinal ]; then
-            echo "❌ Binary not found!"
+            echo "❌ determinal binary missing"
             exit 1
           fi
 
@@ -93,15 +91,14 @@ jobs:
           cp target/release/determinal dist/DeTerminal.app/Contents/MacOS/
           chmod +x dist/DeTerminal.app/Contents/MacOS/determinal
 
-          # Copy app icon if it exists
           if [ -f assets/icon.icns ]; then
             mkdir -p dist/DeTerminal.app/Contents/Resources
             cp assets/icon.icns dist/DeTerminal.app/Contents/Resources/
           fi
 
-          # Create Info.plist with version from git tag
-          VERSION=${GITHUB_REF#refs/tags/v}
-          cat > dist/DeTerminal.app/Contents/Info.plist << EOF
+          VERSION=${GITHUB_REF##*/}
+
+          cat > dist/DeTerminal.app/Contents/Info.plist <<EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">

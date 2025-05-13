@@ -18,15 +18,12 @@ DeTerminal is an AI-assisted terminal tool that suggests and corrects shell comm
 
 Visit the [Releases page](https://github.com/earlred/determinal/releases/latest) to download a prebuilt installer for your platform:
 
-### Option 1: Download Prebuilt Installer
-
-Visit the [Releases page](https://github.com/earlred/DeTerminal/releases/latest) to download a prebuilt installer for your platform:
-
 | Platform              | Installer Type | Download Link |
-|-----------------------|----------------|----------------|
-| macOS (Universal)     | DMG            | [DeTerminal.dmg](https://github.com/earlred/DeTerminal/releases/latest/download/DeTerminal.dmg) |
-| Linux (x64)           | DEB            | [determinal_0.1.3_amd64.deb](https://github.com/earlred/DeTerminal/releases/latest/download/determinal_0.1.3_amd64.deb) |
-| Windows (x64)         | EXE            | [DeTerminal-Setup.exe](https://github.com/earlred/DeTerminal/releases/latest/download/DeTerminal-Setup.exe) |
+|-----------------------|---------------|---------------|
+| macOS (Apple Silicon) | DMG           | [DeTerminal-aarch64.dmg](https://github.com/earlred/determinal/releases/latest/download/DeTerminal-aarch64.dmg) |
+| macOS (Intel)         | DMG           | [DeTerminal-x86_64.dmg](https://github.com/earlred/determinal/releases/latest/download/DeTerminal-x86_64.dmg) |
+| Linux (x64)           | DEB           | [determinal-x86_64-unknown-linux-gnu.deb](https://github.com/earlred/determinal/releases/latest/download/determinal-x86_64-unknown-linux-gnu.deb) |
+| Windows (x64)         | EXE           | [DeTerminal-Setup.exe](https://github.com/earlred/determinal/releases/latest/download/DeTerminal-Setup.exe) |
 
 After downloading:
 1. For macOS: Open the DMG and drag DeTerminal to your Applications folder.
