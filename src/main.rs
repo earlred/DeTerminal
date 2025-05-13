@@ -87,27 +87,46 @@ fn main() {
                 let is_valid = explanation_lower.contains("✅")
                     || explanation_lower.contains("is correct")
                     || explanation_lower.contains("already correct")
-                    || explanation_lower.contains("no need for correction");
+                    || explanation_lower.contains("no need for correction")
+                    || explanation_lower.contains("is valid");
 
-                    
                 if is_valid && (hint.command.is_none() || hint.command.as_deref() == Some(input)) {
-                    println!("{}", hint.text.green());
                     run_command(input);
                 } else if let Some(command) = hint.command {
-                    println!(
-                        "{} {}",
-                        "🤖 I think you meant to run:".cyan(),
-                        format!("`{}`", command)
-                    );
-                    println!("{} {}", "ℹ️ ".dimmed(), hint.text.dimmed());
+                    // Split multiple commands if they exist
+                    let commands: Vec<&str> = command.split(" or ").collect();
+                    
+                    if commands.len() > 1 {
+                        println!("{}", "🤖 I found multiple possible commands:".cyan());
+                        for (i, cmd) in commands.iter().enumerate() {
+                            println!("{}. {}", i + 1, cmd.trim());
+                        }
+                        println!("{} {}", "ℹ️ ".dimmed(), hint.text.dimmed());
+                        
+                        let selection = dialoguer::Select::with_theme(&ColorfulTheme::default())
+                            .with_prompt("Select a command to run")
+                            .items(&commands)
+                            .default(0)
+                            .interact()
+                            .unwrap_or(0);
+                            
+                        run_command(commands[selection].trim());
+                    } else {
+                        println!(
+                            "{} {}",
+                            "🤖 I think you meant to run:".cyan(),
+                            format!("`{}`", command)
+                        );
+                        println!("{} {}", "ℹ️ ".dimmed(), hint.text.dimmed());
 
-                    let confirm = Confirm::with_theme(&ColorfulTheme::default())
-                        .with_prompt("❓ Do you want to run it?")
-                        .interact()
-                        .unwrap_or(false);
+                        let confirm = Confirm::with_theme(&ColorfulTheme::default())
+                            .with_prompt("❓ Do you want to run it?")
+                            .interact()
+                            .unwrap_or(false);
 
-                    if confirm {
-                        run_command(&command);
+                        if confirm {
+                            run_command(&command);
+                        }
                     }
                 } else {
                     println!("{} {}", "🧠 AI Explanation:".cyan(), hint.text);

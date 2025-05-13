@@ -117,7 +117,13 @@ pub fn query_ai_hint(user_input: &str) -> Result<AIHint, Box<dyn std::error::Err
     let arch = std::env::consts::ARCH;
     let prompt = format!(
         "The user is running {} ({}). They typed this in their terminal:\n\n\"{}\"\n\n\
-        Suggest a corrected shell command. Respond in this format:\n\nExplanation: ...\nCommand: ...",
+        If the command is a request for help or information, suggest specific, actionable commands.\n\
+        For example, if they type 'help', suggest 'man bash' or 'help' (for bash) or 'compgen -c' to list commands.\n\
+        Do not use placeholders like [command] - suggest actual commands.\n\
+        If the command is valid, explain it and repeat it exactly.\n\
+        If it's invalid, infer the correct command and output the result in this format:\n\n\
+        Explanation: ...\n\
+        Command: <shell_command>",
         platform, arch, user_input
     );
 
