@@ -15,12 +15,52 @@ lazy_static::lazy_static! {
         let mut commands = HashSet::new();
         if let Ok(contents) = fs::read_to_string("src/commands.json") {
             if let Ok(json) = serde_json::from_str::<Value>(&contents) {
-                if let Some(obj) = json.as_object() {
-                    for (_, value) in obj {
-                        if let Some(arr) = value.as_array() {
-                            for cmd in arr {
-                                if let Some(cmd_str) = cmd.as_str() {
-                                    commands.insert(cmd_str.to_string());
+                // Add common commands
+                if let Some(common) = json.get("common") {
+                    if let Some(obj) = common.as_object() {
+                        for (_, value) in obj {
+                            if let Some(arr) = value.as_array() {
+                                for cmd in arr {
+                                    if let Some(cmd_str) = cmd.as_str() {
+                                        commands.insert(cmd_str.to_string());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Add shell-specific commands
+                let shell = std::env::var("SHELL").unwrap_or_else(|_| {
+                    if cfg!(windows) {
+                        if std::env::var("PSModulePath").is_ok() {
+                            "powershell".to_string()
+                        } else {
+                            "cmd".to_string()
+                        }
+                    } else {
+                        "bash".to_string()
+                    }
+                });
+                
+                let shell_type = if shell.contains("zsh") {
+                    "zsh"
+                } else if shell.contains("powershell") || shell.contains("pwsh") {
+                    "powershell"
+                } else if shell.contains("cmd") {
+                    "cmd"
+                } else {
+                    "bash"
+                };
+                
+                if let Some(shell_commands) = json.get(shell_type) {
+                    if let Some(obj) = shell_commands.as_object() {
+                        for (_, value) in obj {
+                            if let Some(arr) = value.as_array() {
+                                for cmd in arr {
+                                    if let Some(cmd_str) = cmd.as_str() {
+                                        commands.insert(cmd_str.to_string());
+                                    }
                                 }
                             }
                         }
