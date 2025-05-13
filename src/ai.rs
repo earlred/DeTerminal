@@ -59,17 +59,13 @@ pub fn select_ai_source() {
         std::process::exit(1);
     }
 
-    let selection = if choices.len() == 1 {
-        0
-    } else {
-        let items: Vec<&str> = choices.iter().map(|(_, label, _)| *label).collect();
-        Select::with_theme(&ColorfulTheme::default())
-            .with_prompt("Which AI should FixBot use?")
-            .items(&items)
-            .default(0)
-            .interact()
-            .unwrap()
-    };
+    let items: Vec<&str> = choices.iter().map(|(_, label, _)| *label).collect();
+    let selection = Select::with_theme(&ColorfulTheme::default())
+        .with_prompt("Select your AI provider:")
+        .items(&items)
+        .default(0)
+        .interact()
+        .unwrap();
 
     let selected = &choices[selection].2;
     *AI_BACKEND.lock().unwrap() = selected.clone();
